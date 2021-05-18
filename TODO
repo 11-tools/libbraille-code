@@ -1,0 +1,37 @@
+0.20.0
+unicode transcription based on icu
+add unicode braille tables
+verify that term is valid before calling brli_drv functions
+change braille_display and braille_write and braille_status* to return
+   the number of actually written characters (-1 for error)
+change those functions to take utf8 strings as parameters
+configuration parser crash if no empty line at the end of conf file
+rewrite config parser
+API change
+MacOS X configuration applet
+NSIS: detect python when activating python option instead of at
+  install time
+NSIS: detect if libbraille already installed on init instead of at
+  install time
+add python module to deb, rpm
+add java extension to NSIS, debian and RPM packages
+add hotplug dependancy in rpm packages
+  (check sane to see how hotplug package installation works)
+create libbraille-fake RPM package
+verify java extension
+
+later
+better chord handling
+configurable keys
+add functions to configure keys through API
+locking mechanism to allow many applications to share the display
+doc about writing drivers for libbraille
+create win32 backend
+update libtool for win32 or native module loader
+gnome configuration applet
+windows config panel application:
+  http://www.codeproject.com/shell/cpl.asp
+  http://cvs.sourceforge.net/viewcvs.py/gaim/gaim/gaim-installer.nsi?rev=1.66&view=auto
+  http://cvs.sourceforge.net/viewcvs.py/gaim/gaim/gaim.spec.in?rev=1.95&view=auto
+java API which feels like Java
+Python API which feels like Python

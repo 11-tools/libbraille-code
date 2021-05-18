@@ -1,0 +1,5 @@
+
+This driver was written thanks to the documentation "SuperVario and
+PocketVario firmware description" provided by Baum Germany.
+
+It was tested on a Pocket Vario 24 provided by Baum France.

@@ -1,0 +1,20 @@
+Braille Lite Driver for Libbraille
+----------------------------------
+
+This driver was developped thanks to a terminal lended by Sylvie
+Duchateau and has been tested on a BrailleLite 40.
+
+Keys to put in PC Mode
+
+space + 345 then space + p (or 1234 )
+
+
+Serial configuration
+--------------------
+
+(config braillelite sylvie : 9600, no parity, semi duplex, 8 bits, 1
+stop bit, xon/xoff flow control, CR+LF activated)
+
+
+Keys configuration
+------------------

@@ -1,0 +1,5 @@
+Backend for Tieman Voyager displays using USB connexion
+=======================================================
+
+This driver was written thanks to Tieman Voyager terminal provided by
+, and documentation provided by Tieman NL.

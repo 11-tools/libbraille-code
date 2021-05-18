@@ -1,0 +1,537 @@
+\documentclass[12pt,a4paper]{article}
+%%\usepackage[T1]{fontenc}
+%%\usepackage[latin1]{inputenc}
+%%\usepackage{babel}
+%%\usepackage{epsfig}
+
+\author{S\'ebastien Sabl\'e <sable@users.sourceforge.net>}
+\title{Libbraille developer tutorial}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+This document explains how to develop using libbraille in the
+C/C++ languages. It is mostly intended for developers and not for
+simple users.
+
+In this tutorial we will write a simple test program step by step that
+uses most functionalities of the Braille library. The complete test
+program is shown in annex and can be found in the test directory of
+the source distribution.
+
+\section{Generalities}
+
+Interaction with the Braille library is done through functions
+starting with the {\tt braille\_} prefix. In order to use those
+functions, you need to include a {\tt braille.h} header.
+
+\begin{verbatim}
+/* test.c - Test program and simple example */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "braille.h" // the required header
+\end{verbatim}   
+
+Most libbraille functions can return an error, usually by returning
+0. In this case, it is possible to get a string describing precisely
+the problem by calling the {\tt braille\_geterror()} function.
+
+\begin{verbatim}
+if(!braille_init())
+  {
+    fprintf(stderr, "Error initialising libbraille: %s\n", braille_geterror());
+    return 1;
+  }
+\end{verbatim}   
+
+\section{Configuration}
+
+In order to run, libbraille must use a driver specific to the
+connected Braille display; it also needs to know what Braille table
+should be used to convert ASCII characters to Braille, as well as the
+port to which the display is connected.
+
+Parameters like the Braille display or port can usally be autodetected
+so that it is not necessary to specify them. All parameters can also
+be configured through a configuration file [TODO: or through the
+windows registry on windows platforms].
+
+However, an application may want to provide its own configuration
+system to configure libbraille parameters. In order to permit that,
+libbraille provides some functions to configure and request the
+current configuration.
+
+\subsection{Driver configuration}
+
+The list of available drivers can be obtained with the following
+functions:
+\begin{description}
+\item[{\tt braille\_drivernum()}] returns the number of available drivers
+\item[{\tt braille\_drivername(i)}] returns the name of driver number
+i
+\item[{\tt braille\_drivermodels(i)}] returns a string describing the
+models supported by driver number i
+\end{description}
+
+The following example shows how those functions can be used:
+\begin{verbatim}
+for(i = 0; i < braille_drivernum(); i++)
+  {
+    printf("driver [%d]: %s, supporting models: %s", i, braille_drivername(i),
+	     braille_drivermodels(i));
+    printf("\n");
+  }
+\end{verbatim}   
+
+Once the name of the driver to use has been selected, it can be
+configured in libbraille by using the {\tt braille\_config} like in
+this example where ``once'' is the name of a driver:
+
+\begin{verbatim}
+braille_config(BRL_DRIVER, "once");
+\end{verbatim}
+
+Note that there is a special driver named ``auto''. This driver can be
+used when the Braille display should be autodetected.
+
+\subsection{Braille table configuration}
+
+The list of available Braille tables can be obtained with the
+following functions:
+\begin{description}
+\item[{\tt braille\_tablenum()}] returns the number of available
+tables
+\item[{\tt braille\_tablename(i)}] returns the name of table number i
+\item[{\tt braille\_tabledesc(i)}] returns a string describing the
+Braille table number i
+\end{description}
+
+The following example shows how those functions can be used:
+\begin{verbatim}
+for(i = 0; i < braille_tablenum(); i++)
+  {
+    printf("table [%d]: %s, corresponding to: %s", i, braille_tablename(i),
+	     braille_tabledesc(i));
+    printf("\n");
+  }
+\end{verbatim}
+
+Once the name of the table to use has been selected, it can be
+configured in libbraille by using the {\tt braille\_config} like in
+this example where ``french.tbl'' is the name of a table:
+\begin{verbatim}
+braille_config(BRL_TABLE, "french.tbl");
+\end{verbatim}
+
+\subsection{Misc configuration}
+
+The {\tt braille\_config} function can be used to configure other
+parameters by changing the first argument:
+\begin{description}
+\item[{\tt BRL\_DEVICE}] to configure the port where the display is connected
+\item[{\tt BRL\_PATH}] (in windows) to configure the path where
+  libbraille have been installed
+\item[{\tt BRL\_PATHCONF}] (unix only) to configure the path where
+  the configuration file can be found
+\item[{\tt BRL\_PATHDRV}] to configure the path where additionnal
+  drivers can be found
+\item[{\tt BRL\_PATHTBL}] to configure the path where additionnal
+  tables can be found
+\end{description}
+
+A complete example:
+\begin{verbatim}
+braille_config(BRL_DEVICE, "COM1");
+braille_config(BRL_DRIVER, "auto");
+braille_config(BRL_TABLE, "foo.tbl");
+braille_config(BRL_PATH, "/foo/bar/");
+\end{verbatim}
+
+\section{Initialisation}
+
+The {\tt braille\_init} function should be called right after
+configuration, before any other function of the library. It will parse
+the configuration file, autodetect the Braille display if necessary,
+load the correct driver and Braille table then initialise and
+configure the Braille display.
+
+\begin{verbatim}
+if(!braille_init())
+  {
+    fprintf(stderr, "Error initialising libbraille: %s\n", braille_geterror());
+    return 1;
+  }
+\end{verbatim}   
+
+\section{Query configuration}
+
+Once the library has been initialised, it is possible to query the
+configuration that is used by using the {\tt braille\_config} function
+with a specific parameter:
+\begin{description}
+\item[{\tt BRL\_DEVICE}] to query the port where the display is connected
+\item[{\tt BRL\_DRIVER}] to query the name of the Braille display driver
+\item[{\tt BRL\_TERMINAL}] to query for the model of Braille display
+which is connected
+\item[{\tt BRL\_TABLE}] to query the name of the Braille table
+\item[{\tt BRL\_PATH}] to query the path where libbraille data files
+have been found
+\item[{\tt BRL\_PATHCONF}] (unix only) to query the path where the
+  configuration file can be found
+\item[{\tt BRL\_PATHDRV}] to query the path where additionnal
+  drivers can be found
+\item[{\tt BRL\_PATHTBL}] to query the path where additionnal
+  tables can be found
+\item[{\tt BRL\_VERSION}] to query the version of libbraille
+\end{description}
+
+The {\tt braille\_size()} function returns the number of cells of
+Braille display. The {\tt braille\_statussize()} function returns the
+number of additionnal cells for the status area.
+
+\begin{verbatim}
+printf("Libbraille version %s initialised correctly "
+       "with driver %s using terminal %s with %d cells on device %s\n",
+       braille_info(BRL_VERSION), braille_info(BRL_DRIVER),
+       braille_info(BRL_TERMINAL), braille_size(),
+       braille_info(BRL_DEVICE));
+\end{verbatim}
+
+\section{Displaying a Simple String}
+
+The easiest way to write something on the Braille display is to use
+the {\tt braille\_display} function. It must be called with a string
+terminated by {\tt NULL} and will display that string on the display.
+
+\begin{verbatim}
+braille_display("test_libbraille started");
+\end{verbatim}   
+
+\section{Advanced dots displaying}
+
+There is a more complex function to display something, when a better
+control of what is displayed is necessary, for example when displaying
+something other than text. What will be displayed is a combination of
+text and a filter that directly manipulates dots.
+
+First you set the text with {\tt braille\_write}. Contrarly to {\tt
+braille\_display}, this function does not take a {\tt NULL}
+terminated string as parameter, but a pointer to some chars and a
+number indicating the number of chars to read.
+   
+Then you use {\tt braille\_filter} to raise some dots. The first
+argument of {\tt braille\_filter} is an unsigned char corresponding to
+which dots have to be activated. The second argument is the number of
+the cell which has to be modified, starting at 0.
+
+The dots 1, 2, 3, 4, 5, 6 and 7 correspond respectively to bits 0, 1,
+2, 3, 4, 5, 6 and 7 of the unsigned char.  For example, a cursor made
+of dots 7 and 8 corresponds to the binary number 00000011. There is a
+{\tt BRAILLE} macro that makes it simple to get the correct value. It
+just takes as parameters the state of each dot.
+
+Finally, {\tt braille\_render} is called. This function filters the
+text given by {\tt braille\_write} with the filter defined through
+{\tt braille\_filter} and send the data to the Braille display.
+
+The following example display some text with a cursor under the first
+character:
+\begin{verbatim}
+{  
+  char *hello_msg = "more complex test";
+
+  braille_write(hello_msg, strlen(hello_msg)); 
+  braille_filter(BRAILLE(0, 0, 0, 0, 0, 0, 1, 1), 0);
+  braille_render();
+}   
+\end{verbatim}
+
+\section{Typing with the Braille Keyboard}
+
+Most Braille displays have some keys like cursors or function keys to
+interact with the computer. Some even feature a Braille keyboard to
+input text. Libbraille makes it possible to get an event when some of
+those keys are pressed by using the {\tt braille\_read} function.
+
+\subsection{Setting the timeout}
+
+Depending on the application, it is sometime necessary to control how
+much time a function can take before returning. There is a function
+called {\tt braille\_timeout} to configure how the {\tt braille\_read}
+function should behave:
+\begin{description}
+\item[blocking] in this mode, {\tt braille\_read} will wait forever
+that a key is pressed on the display. This mode is set by passing -1
+to {\tt braille\_timeout}.
+\item[immediat return] in this mode, {\tt braille\_read} will test if
+a key has been pressed and return immediately after. This mode is set
+by passing 0 to {\tt braille\_timeout}.
+\item[time limited] in this mode, {\tt braille\_read} will wait at
+most during a given time that a key is pressed on the display. This
+mode is set by passing a time expressed in milliseconds to
+{\tt braille\_timeout}.
+\end{description}
+
+\subsection{Reading data}
+
+When a key is pressed or at the time limit, the {\tt braille \_read}
+function returns a structure of type {\tt brl\_key} describing the
+event that happened.
+
+The structure has an attribute named {\tt type} describing the type of
+key pressed. It can have a few values:
+\begin{description}
+\item[{\tt BRL\_NONE}] in this case, no key has been pressed. The function
+returned because of a timeout
+\item[{\tt BRL\_CURSOR}] a ``cursor routing'' key has been
+pressed. Those are the keys which are just above the Braille cells. In
+this case, the {\tt code} attribute contains the number starting at 0
+of the cell for which the cursor routing key has been pressed.
+\item[{\tt BRL\_CMD}] a ``function'' key has been pressed. Those are
+keys with a special function like validate, read further on the right
+or move at the top of the page. The {\tt code} attribute contains a
+code depending on the function key. There are many codes which can be
+found in the {\tt braille.h} header file.
+\item[{\tt BRL\_KEY}] the user has typed some ASCII characters on the
+display. The {\tt code} attribute gives the ASCII value [TODO: and
+{\tt unicode} provides the unicode value] of the character.
+\end{description}
+
+\begin{verbatim}
+/* we want the braille_read function to wait forever while no key
+   has been pressed */
+braille_timeout(-1);
+
+/* get the keys pressed on the display */
+while(1)
+  {
+    signed char status;
+    brl_key key;
+    
+    status = braille_read(&key);
+    if(status == -1)
+      {
+        printf("error in braille_read: %s",
+	       braille_geterror());
+      }
+    else if(status)
+      {
+     printf("Read key with type %d and code %d\n",
+            key.type, key.code);
+     switch(key.type)
+       {
+        case BRL_NONE:
+          break;
+        case BRL_CURSOR:
+          printf("cursor: %d\n", key.code);
+          break;
+        case BRL_CMD:
+          printf("command: ");
+          switch(key.code)
+    	{
+    	case BRLK_HOME:
+    	  printf("home\n");
+    	  break;
+    	case BRLK_BACKWARD:
+    	  braille_display("backward");
+    	  printf("reading further left on the display\n");
+    	  break;
+    	case BRLK_FORWARD:
+    	  braille_display("forward");
+    	  printf("reading further right on the display\n");
+    	  break;
+    	default:
+    	  printf("unknown cmd\n");
+    	  break;
+    	}
+          break;
+        case BRL_KEY:
+          printf("braille: 0x%x\n", key.braille);
+          printf("code: %d ou 0x%x\n", key.code, key.code);
+          printf("char: %c\n", key.code);
+          break;
+        default:
+          printf("unknown type %d\n", key.type);
+        }
+    }
+  }
+\end{verbatim}
+
+\section{Stopping the Library}
+
+Finally, the {\tt braille\_close} function must always be called when
+closing the Braille library. It will unload the driver, free resources
+and close the library.
+
+\begin{verbatim}
+braille_close();
+printf("Leaving test_libbraille\n");
+\end{verbatim}
+
+\section{Compiling}
+
+Libbraille is made of a shared library. In order to use it you need to
+link the library to your program.
+
+For Visual C++ developpers, you need to add the libbraille-1.lib file
+to your project. An example Visual C++ project and the .lib file is
+available on the download page of the web site as
+libbraille-dev-x.x.x-VC6.zip
+
+For unix developpers, linking the library is just a matter of
+adding the {\tt-lbraille} option at compile time.
+For example, compiling the previous test code would be :
+\begin{verbatim}
+    cc test.c -o test -lbraille
+\end{verbatim}
+
+\section*{Annex}
+\begin{verbatim}
+/*
+ * test_libbraille.c - Test program and simple example
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "braille.h"
+
+int 
+main(int argc, char *argv[])
+{
+  int i;
+
+  printf("Starting test_libbraille\n");
+
+  for(i = 0; i < braille_drivernum(); i++)
+    {
+      printf("driver [%d]: %s, supporting models: %s", i, braille_drivername(i),
+	     braille_drivermodels(i));
+      printf("\n");
+    }
+
+  for(i = 0; i < braille_tablenum(); i++)
+    {
+      printf("table [%d]: %s, corresponding to: %s", i, braille_tablename(i),
+	     braille_tabledesc(i));
+      printf("\n");
+    }
+
+  /* uncomment to config some values without using the configuration
+     file */
+  /* braille_config(BRL_DEVICE, "COM1"); */
+  /* braille_config(BRL_DRIVER, "eco"); */
+  /* or braille_config(BRL_DRIVER, "auto"); */
+  /* braille_config(BRL_TABLE, "foo.tbl"); */
+  /* braille_config(BRL_PATH, "/foo/bar/"); */
+  /* ... */
+
+  if(!braille_init())
+    {
+      fprintf(stderr, "Error initialising libbraille: %s\n",
+                      braille_geterror());
+      
+      fprintf(stderr, "Testing fake driver\n");
+      braille_config(BRL_DRIVER, "none");
+      if(!braille_init())
+	{
+	  fprintf(stderr, "Error initialising libbraille: %s\n",
+                          braille_geterror());
+	  return 1;
+	}
+    }
+
+  printf("Libbraille version %s initialised correctly " \
+	 "with driver %s using terminal %s with %d cells on device %s\n",
+	 braille_info(BRL_VERSION), braille_info(BRL_DRIVER),
+	 braille_info(BRL_TERMINAL), braille_size(),
+	 braille_info(BRL_DEVICE));
+
+  /* we want the braille_read function to wait forever while no key
+     has been pressed */
+  // braille_timeout(-1);
+
+  /* we want the braille_read function to wait at most 1s while no key
+     has been pressed */
+  braille_timeout(1000);
+
+  printf("displaying string\n");
+  /* simple way to display something */
+  braille_display("test_libbraille started");
+
+  /* complex and powerful way to display something */
+  {
+    char *hello_msg = "test_libbraille started";
+
+    braille_write(hello_msg, strlen(hello_msg)); 
+    braille_filter(BRAILLE(0, 0, 0, 0, 0, 0, 1, 1), 0);
+    braille_filter(BRAILLE(0, 0, 0, 0, 0, 0, 1, 1), 23);
+    braille_render();
+  }
+
+  /* Displaying a few things on the status cells */
+  if(braille_statussize() > 0)
+    braille_statusdisplay("abc");
+
+  /* get the keys pressed on the display */
+  while(1)
+    {
+      signed char status;
+      brl_key key;
+      
+      status = braille_read(&key);
+      if(status == -1)
+	{
+	  printf("error in braille_read: %s", braille_geterror());
+	}
+      else if(status)
+	{
+	  printf("Read key with type %d and code %d\n", key.type, key.code);
+	  switch(key.type)
+	    {
+	    case BRL_NONE:
+	      break;
+	    case BRL_CURSOR:
+	      printf("cursor: %d\n", key.code);
+	      break;
+	    case BRL_CMD:
+	      printf("command: ");
+	      switch(key.code)
+		{
+		case BRLK_HOME:
+		  printf("home\n");
+		  break;
+		case BRLK_BACKWARD:
+		  braille_display("backward");
+		  printf("reading further left on the display\n");
+		  break;
+		case BRLK_FORWARD:
+		  braille_display("forward");
+		  printf("reading further right on the display\n");
+		  break;
+		default:
+		  printf("unknown cmd\n");
+		  break;
+		}
+	      break;
+	    case BRL_KEY:
+	      printf("braille: 0x%x\n", key.braille);
+	      printf("code: %d ou 0x%x\n", key.code, key.code);
+	      printf("char: %c\n", key.code);
+	      break;
+	    default:
+	      printf("unknown type %d\n", key.type);
+	    }
+	}
+    }
+
+  /* now we stop everything */
+  braille_close();
+
+  printf("Leaving test_libbraille\n");
+  return 0;
+}
+\end{verbatim}
+\end{document}

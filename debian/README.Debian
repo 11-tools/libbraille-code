@@ -1,0 +1,7 @@
+libbraille for Debian
+---------------------
+
+The configuration should be edited to match your braille display. It can be found in :
+/etc/libbraille.conf
+
+ -- Sébastien Sablé <sable@users.sourceforge.net>, Thu, 13 Mar 2002 20:41:04 +0100

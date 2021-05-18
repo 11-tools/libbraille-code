@@ -1,0 +1,36 @@
+Handy Tech driver
+=================
+
+This driver was written thanks to a Braille Wave 40 display at the
+INSERM (Paris, France).
+
+Warning: when the display is in sleep mode, it cannot be
+autodetected. You should then press a key on it before to try the
+autodetection.
+
+Setting up the Braille Wave
+
+To put the Braille Wave in PC mode :
+
+1. Power on the Braille Wave
+2. Click the key on the right of the display twice (the display shows
+   "PC mode")
+3. Click the key on the right of the space bar
+
+Setting up the Vario in Handy Tech emulation mode
+
+In order to use this driver you need to set your Vario to "Emulation Mode 2"
+as follows:
+
+1. Power on the Vario. It should print some status information,
+   starting with the text "BAUM". Last in the display there should be
+   information on which emulation-mode is in use, memorize this so
+   you'll be able to change it back if necessary.
+2. Change the emulation using the upper and lower buttons beside the
+   display.  Depending on the firmware-version the Vario can have 2-5
+   modes. The end of the display should read "Emul. 2". For some
+   reason the dot-patterns doesn't seem to match real braille, so
+   ignore the lower right dot in the number.
+3. Save the setting by pressing the upper and lower button right or
+   left beside the display simultaneously about 3 seconds. The display
+   will then show "Saved".

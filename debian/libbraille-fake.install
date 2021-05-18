@@ -1,0 +1,3 @@
+usr/lib/libbraille*/fake*.so*
+usr/lib/libbraille*/fake*.la
+usr/share/libbraille*/*.png

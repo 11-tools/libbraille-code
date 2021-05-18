@@ -1,0 +1,42 @@
+# This is a sample configuration file for libbraille.
+#
+# Libbraille expects to find its configuration file in
+# /usr/local/etc/libbraille.conf or /etc/libbraille.conf depending on
+# the compilation options.
+#
+# Blank lines are ignored.  The character '#' initiates a comment; all
+# characters from it to the end of the line are ignored.
+
+# The device directive specifies the serial port to which your braille
+# display is connected. It should be the absolute path to the device.
+# This parameter is not necessaery for USB devices.
+
+device @DEVICE_STR@
+
+# The driver directive specifies the driver for your braille
+# display. It can be one of:
+#     - alva		Alva
+#     - alvausb		Alva USB
+#     - baum		Baum
+#     - braillelite     BrailleLite
+#     - braillenote	BrailleNote
+#     - combibraille    CombiBraille
+#     - eurobraille	EuroBraille
+#     - fake		Fake Gtk+ or win32 terminal
+#     - hermes		Hermes
+#     - handytech	HandyTech
+#     - none		No terminal
+#     - once		ONCE
+#     - papenmeierusb	Papenmeier USB
+#     - technibraille   TechniBraille
+#     - text		Fake textual terminal
+#     - vario		BAUM Vario
+#     - voyager		Tieman Voyager
+
+driver auto
+
+# The table directive specifies which dot translation table to
+# use. It may be either the absolute or a relative path to the ".tbl"
+# file.
+
+table french.tbl

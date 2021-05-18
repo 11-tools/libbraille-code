@@ -1,0 +1,7 @@
+Backend for the Alva
+====================
+
+This driver was written thanks to a 544 Satellite terminal provided by
+the "Salle Louis Braille" at the "Cité des Sciences et de l'Industrie"
+in Paris. It also was written thanks to documentation ("Serial
+communication protocol ALVA displays") provided by Alva .

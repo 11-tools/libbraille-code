@@ -1,0 +1,22 @@
+Backend for eurobraille terminals
+=================================
+
+This driver was created thanks to documentation provided by
+eurobraille.
+
+It was tested on an azerBRAILLE 4, a Scriba and an Iris from the
+BrailleNet association.
+It was tested on an CLIO euroBRAILLE 8 at the Cité des Sciences et de
+L'Industrie de La Villette.
+
+The iris can be put in PC mode by choosing (with cursor keys) the
+"serial-PC" option at launch time (it is the third on the line after
+starting the terminal).
+
+The azerBraille is already in PC mode at launch time.
+
+The Scriba can be put in PC mode by typing 'b' (dots 1 and 2) once the
+terminal has been started.
+
+The CLIO euroBRAILLE can be put in PC mode by pressing on the numeric
+keypad the 'B' key then the '3' key.

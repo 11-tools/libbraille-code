@@ -1,0 +1,34 @@
+#! /bin/bash -e
+#
+# Debian prerm script for Python x.y hierarchical modules
+# Written by Gregor Hoffleit <flight@debian.org>
+# Extended by Matthias Klose <doko@debian.org>
+#
+
+PACKAGE=`basename $0 | sed -e 's/\.[^.]*$//'`
+PV=`dpkg --listfiles $PACKAGE | sed -n -e '/^\/usr\/lib\/python.*\//{
+  s,/usr/lib/python\([0-9][0-9.]*\)/.*,\1,p
+  q
+}'`
+DIRLIST="/usr/lib/python$PV/site-packages"
+
+case "$1" in
+    configure|abort-upgrade|abort-remove|abort-deconfigure)
+	for i in $DIRLIST ; do
+	    /usr/bin/python$PV -O /usr/lib/python$PV/compileall.py -q $i
+	    /usr/bin/python$PV /usr/lib/python$PV/compileall.py -q $i
+	done
+#	if [ -f /usr/share/doc-base/$PACKAGE ]; then
+#	    if command -v install-docs >/dev/null 2>&1; then
+#		install-docs -i /usr/share/doc-base/$PACKAGE
+#	    fi
+#	fi
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#

@@ -1,0 +1,305 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "Python"="..\Python\Python.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SimpleTest"="..\test\SimpleTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name alva
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name alvausb
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name baum
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name braillelite
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name braillenote
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name eurobraille
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name handytech
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name none
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name once
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name papenmeierusb
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name technibraille
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name text
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name voyager
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "alva"="..\backend\alva\alva.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "alvausb"="..\backend\alvausb\alvausb.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "baum"="..\backend\baum\baum.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "braillelite"="..\backend\braillelite\braillelite.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "braillenote"="..\backend\braillenote\braillenote.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "eurobraille"="..\backend\eurobraille\eurobraille.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "fake"="..\backend\fakewin\fake.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "handytech"="..\backend\handyTech\handytech.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "libbraille"="..\lib\libbraille.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "none"="..\backend\none\none.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "once"="..\backend\once\once.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "papenmeierusb"="..\backend\papenmeierusb\papenmeierusb.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "technibraille"="..\backend\technibraille\technibraille.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "text"="..\backend\text\text.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "voyager"="..\backend\voyager\voyager.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libbraille
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

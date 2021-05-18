@@ -1,0 +1,16 @@
+Backend for the Braille Note
+============================
+
+The BrailleNote is the latest notetaker from Pulse Data International
+and can be used as a refreshable braille display. To use the
+BrailleNote as a refreshable braille display, follow the steps below:
+
+1.  Turn the BrailleNote on. The BrailleNote should display the
+message "Resuming KeySoft, Main Menu."
+2.  From the BrailleNote's Main Menu, select "Terminal for
+Screenreader" by pressing 9 times SPACE + dot 4.
+3.  Select this with the dot 8
+3.  Launch the program using libbraille
+
+
+To get out of display mode, press SPACE + e (dots 1-5)

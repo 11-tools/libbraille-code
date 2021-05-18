@@ -1,0 +1,121 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+objdir = $(CURDIR)/obj-$(DEB_BUILD_GNU_TYPE)
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	-test -r /usr/share/misc/config.sub && \
+	cp -f /usr/share/misc/config.sub config.sub
+	-test -r /usr/share/misc/config.guess && \
+	cp -f /usr/share/misc/config.guess config.guess
+
+	# Add here commands to configure the package.
+	./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
+	  --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --infodir=/usr/share/info --enable-fake --enable-doc
+	# --enable-python
+	# --enable-java --with-javainc=/usr/lib/j2se/1.3/include/ --with-javaincnative=/usr/lib/j2se/1.3/include/linux/ 
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+
+	$(MAKE) pkglibdir=/usr/lib/libbraille0-15
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -f config.sub config.guess
+
+	-$(MAKE) distclean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# Main install
+	$(MAKE) install pkglibdir=/usr/lib/libbraille0-15 DESTDIR=$(CURDIR)/debian/tmp
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+
+	# Move all files in their corresponding package
+	dh_install --list-missing --sourcedir=debian/tmp
+
+        # install devfs config file
+	cp debian/devfs/braille debian/libbraille0-15/etc/devfs/conf.d/braille
+
+        # install hotplug script
+	cp scripts/hotplug/libbraille.usermap debian/libbraille0-15/etc/hotplug/usb/libbraille.usermap
+	cp scripts/hotplug/libusbbraille debian/libbraille0-15/etc/hotplug/usb/libusbbraille
+	chmod +x debian/libbraille0-15/etc/hotplug/usb/libusbbraille
+
+# may be needed for voyager module??
+##         # blacklist the xxx module; it's not needed anymore
+##         mkdir -p debian/libbraille0-15/etc/hotplug/blacklist.d
+##         echo "hpusbscsi" > debian/libbraille0-15/etc/hotplug/blacklist.d/libbraille
+
+	dh_installchangelogs ChangeLog
+	dh_installdocs
+#	dh_installexamples
+#	dh_installdebconf
+#	dh_installman
+#	dh_installlogrotate
+#	dh_installinfo
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_python
+#	dh_perl
+	dh_makeshlibs -V
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

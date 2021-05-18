@@ -1,0 +1,52 @@
+Source: libbraille
+Section: libs
+Priority: optional
+Maintainer: Sébastien Sablé <sable@users.sourceforge.net>
+Build-Depends: debhelper (>= 4.1.16), autotools-dev, libusb-dev (>= 0.1.8), libgtk2.0-dev, python, latex2html
+Standards-Version: 3.6.1
+
+Package: libbraille-fake
+Architecture: any
+Section: libs
+Depends: libbraille0-15 (= ${Source-Version}), libgtk2.0-0
+Description: Library to easily access Braille displays and terminals (virtual display)
+ This library makes it possible to easily access Braille displays and
+ terminals.
+ This package provides a Gtk+ virtual display, so that developers can
+ test Braille output without owning any expensive Braille display
+
+Package: libbraille0-15
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Recommends: hotplug
+Description: Library to easily access Braille displays and terminals
+ This library makes it possible to easily access Braille displays and
+ terminals. It is compatible with a wide range of braille displays.
+ .
+ See http://libbraille.org/ for more details
+
+Package: libbraille-dev
+Architecture: any
+Section: libdevel
+Depends: libbraille0-15 (= ${Source-Version}), libc6-dev
+Description: Library to easily access Braille displays and terminals (dev files)
+ This library makes it possible to easily access Braille displays and
+ terminals. It is compatible with a wide range of braille displays.
+ See http://libbraille.org/ for more details
+
+# Package: python-braille
+# Architecture: any
+# Depends: libbraille0 (= ${Source-Version}), ${python:Depends}, libc6-dev
+# Description: Python interface to libbraille
+#  This library make it possible to easily access Braille displays and
+#  terminals. It is compatible with a wide range of braille displays.
+#  See http://libbraille.org/ for more details
+ 
+# Package: libbraille-java
+# Architecture: any
+# Depends: libbraille0 (= ${Source-Version}), libc6-dev
+# Description: Java interface to libbraille
+#  This library make it possible to easily access Braille displays and
+#  terminals. It is compatible with a wide range of braille displays.
+#  See http://libbraille.org/ for more details

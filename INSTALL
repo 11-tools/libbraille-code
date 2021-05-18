@@ -1,0 +1,70 @@
+Building the Python module
+==========================
+
+Just run:
+./configure --enable-python
+make
+make install
+
+You can then use libbraille by importing the braille module.
+
+Example:
+sable@incubus:~$ python
+Python 2.1.3 (#1, Jul 29 2002, 22:34:51) 
+[GCC 2.95.4 20011002 (Debian prerelease)] on linux2
+Type "copyright", "credits" or "license" for more information.
+>>> from braille import braille_init
+>>> braille_init()
+Processing file: /usr/local/etc/libbraille.conf
+libbraille 0.9.5
+Braille device: /dev/ttyS0
+Library libbraillefa loaded
+Braille driver: libbraillefa (Fake terminal)
+Using data directory '/usr/local/share/libbraille'
+Dot Translation Table: french.tbl
+Braille display: 1 rows of 30 cells.
+1
+>>>
+
+Building the java extension
+===========================
+
+You need to add the --enable-java option to configure and also to
+provide the right path where to find the jni.h headers (two
+directories).
+
+Example:
+./configure --enable-java --with-javainc="/usr/lib/j2sdk1.3/include"
+--with-javaincnative="/usr/lib/j2sdk1.3/include/linux"
+
+Then running make will provide two files : java/jbraille.jar and
+java/.libs/jbraille.x.x.x.so. You should copy those 2 files to the
+extension directory of your java system.
+
+Example:
+cp java/jbraille.jar /usr/lib/j2re1.3/lib/ext/
+cp libjbraille.so.0.5.0 /usr/lib/j2re1.3/lib/i386/libjbraille.so
+
+You can then use simply the java extension in your program by loading jbraille.
+
+Example main.java:
+public class main {
+    static {
+	try {
+	    System.loadLibrary("jbraille");
+	} catch (UnsatisfiedLinkError e) {
+	    System.err.println("Native code library failed to load. " + e);
+	    System.exit(1);
+	}
+    }
+
+   public static void main(String argv[]) {
+       System.out.println(jbraille.braille_init());
+       jbraille.braille_display("test_libbraille started");
+   }
+}
+
+Linux note:
+You may have to set the LD_LIBRARY_PATH to "." in under for java to
+find the needed class of the extension.
+export LD_LIBRARY_PATH="."

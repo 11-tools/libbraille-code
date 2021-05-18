@@ -1,0 +1,5 @@
+Backend for Papenmeier displays using USB connection
+====================================================
+
+This driver was written thanks to a Braillex 40s terminal provided by
+AlphaBraille.

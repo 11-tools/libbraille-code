@@ -1,0 +1,7 @@
+Backend for ONCE terminals
+=================================
+
+This driver was developed by Sébastien Sablé thanks to documentation
+from ONCE (ECO BRAILLE - MANUAL DE USUARIO, Edicion AA Fecha 19/12/96)
+It was tested with an Eco - Braille 20 from the BrailleNet
+association.

@@ -1,0 +1,41 @@
+# This file is part of libbraille.
+#
+# The entries below are used to detect a USB Braille display when it's
+# plugged in and then run the libusbbraille script to change the
+# ownership and permissions on the "device node" used by libusb.
+#
+# The 0x0003 match flag means the device is matched by its vendor and
+# product IDs.
+#
+# Sample entry (replace 0xVVVV and 0xPPPP with vendor ID and product ID respectively) :
+# libusbraille      0x0003      0xVVVV   0xPPPP    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+#
+# usb module         match_flags idVendor idProduct bcdDevice_lo bcdDevice_hi bDeviceClass bDeviceSubClass bDeviceProtocol bInterfaceClass bInterfaceSubClass bInterfaceProtocol driver_info
+#
+#
+# If your display isn't mentioned there, add it as explained above and
+# mail the entry to the libbraille-misc mailing list.
+
+# Alva|544 Satellite
+libusbbraille             0x0003      0x06b0   0x0001    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Baum|Pocket Vario 24
+libusbbraille             0x0003      0x0403   0xfe71    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Baum|Super Vario 40
+libusbbraille             0x0003      0x0403   0xfe72    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Baum|Super Vario 32
+libusbbraille             0x0003      0x0403   0xfe73    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Baum|Super Vario 64
+libusbbraille             0x0003      0x0403   0xfe74    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Baum|Super Vario 80
+libusbbraille             0x0003      0x0403   0xfe75    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Papenmeier|BrailleEx EL 40s
+libusbbraille             0x0003      0x0403   0xf208    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000
+
+# Tieman|Voyager
+libusbbraille             0x0003      0x0798   0x0001    0x0000       0x0000       0x00         0x00            0x00            0x00            0x00               0x00               0x00000000

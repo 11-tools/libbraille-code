@@ -1,0 +1,13 @@
+etc/libbraille.conf
+usr/lib/libbraille*.so*
+usr/lib/libbraille*/[!f]*.la
+usr/lib/libbraille*/?[!a]*.la
+usr/lib/libbraille*/??[!k]*.la
+usr/lib/libbraille*/???[!e]*.la
+usr/lib/libbraille*/[!f]*.so*
+usr/lib/libbraille*/?[!a]*.so*
+usr/lib/libbraille*/??[!k]*.so*
+usr/lib/libbraille*/???[!e]*.so*
+usr/share/libbraille*/*.tbl
+usr/bin/test_libbraille
+

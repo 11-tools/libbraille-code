@@ -1,0 +1,4 @@
+# This file was installed by the libbraille Debian package
+#
+# device permissions for USB Braille displays
+REGISTER  ^usb/braille([0-9]+)$  PERMISSIONS  root.braille  0660

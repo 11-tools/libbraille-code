@@ -1,0 +1,31 @@
+Frequently Asked Question for libbraille
+========================================
+
+Q. How to install libbraille?
+
+A. For windows :
+   libbraille generaly comes linked to a program. Nothing special to
+    do.
+
+   For unix systems :
+   - tar xvzf libbraille-x.x.x.tar.gz
+   - cd libbraille
+   - ./configure
+   - make
+   - As root, type make install. This will install everything in
+     /usr/local
+
+   Debian users can directly install the package like this :
+   dpkg -i libbraille0-x.x.x-x.deb
+
+Q. How do I select my braille display?
+
+A. You should edit the libbraille.conf file in your /usr/local/etc
+   directory for unix or braille/ directory for windows.
+
+Q. Who do I contact if I have questions or problems?
+
+A. There is a whole bug resolution system on the libbraille page at
+   sourceforge :
+   http://sourceforge.net/projects/libbraille
+   Or contact Sébastien Sablé <sable at users.sourceforge.net>

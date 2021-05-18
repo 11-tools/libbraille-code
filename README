@@ -1,0 +1,31 @@
+Libbraille - Library to easily access Braille displays and terminals
+
+Web Page: http://libbraille.org
+
+Libbraille comes with ABSOLUTELY NO WARRANTY.
+
+This is free software, placed under the terms of the GNU Lesser
+General Public License, as published by the Free Software Foundation.
+Please see the file COPYING for details.
+
+Currently supported hardware
+============================
+
+The following Braille displays are supported :
+
+* Alva ABT320, ABT340, ABT340 Desktop, ABT380, ABT380 Twin Space,
+Delphi 40, Delphi 80, Satellite 544, 570 Pro, 584 Pro and 544
+Traveller
+* Baum Pocket and super Vario 24, 32, 40, 64 and 80
+* Blazie Engineering BrailleLite 18, 40, Millenium 20 and Millenium 40
+* EuroBraille NoteBRAILLE, Clio-NoteBRAILLE, SCRIBA, AzerBRAILLE,
+CLIO-euroBraille and Iris
+* Handytech 40, 80 and BrailleWave
+* Hermes
+* MDV MB 408S
+* ONCE Eco 20, 40 and 80
+* Papenmeier Braillex EL 40S
+* Pulse Data BrailleNote 18 and 32
+* TechniBraille Manager 40i and 40s
+* Tieman Combibraille 45 and 85
+* Tieman Voyager 44, 44+, 70 and 70+

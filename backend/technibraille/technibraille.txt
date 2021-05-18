@@ -1,0 +1,5 @@
+
+This driver was written thanks to a Manager 40i display given by
+Edmond Charmet and a Manager 40s display given by Dany Lejolivet.
+
+To put the Manager in PC mode, you have to press the M and ESC keys (2 keys at the top left) together at the same time after putting the Manager on.

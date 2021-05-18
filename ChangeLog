@@ -1,0 +1,439 @@
+2007-08-17  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* backend/voyager/brl.c: Corrected memory leak when closing
+	voyager driver
+
+2006-03-02  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.19.0
+	* scripts/libbraille.inf: Updated for libusb-win32 20051120
+	* lib/braille.c: Corrected bug in braille_write where extended
+	ASCII char are discarded (thanks to Ismo Salonen)
+	* Updated copyright headers
+	* Various cleaning before releasing 0.19.0
+
+2005-10-01  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Rewrote Baum serial driver using documentation provided by
+	Baum. Added support for USB devices.
+
+2005-09-30  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* All backends: passing a type argument to brli_drvinit
+	* Improved autodetection system
+	* Various minor cleanings
+	* lib/serial_win32.c, lib/serial_tios.c: Removed deprecated old
+	serial API
+	* backend/eurobraille/brl.c: Added support for additionnal Scriba
+	model
+	* scripts/libbraille.inf: Added USB IDs for Papenmeier display
+
+2005-09-01  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* backend/papenmeierusb: Added driver for Papenmeier USB displays
+	thanks to a loan by Alphabraille and minimal documentation from
+	Papenmeier
+	* backend/alvausb/brl.c: Corrected Alvausb driver to make it work
+	on Mac
+
+2005-08-31  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* backend/fakegtk/brl.c: Do not call gtk_main if the library is
+	called from a Gtk+ application (necessary for Mozilla for example)
+	* backend/fakegtk/brl.c: Updated to use asynchronous queue instead
+	of locks to wait between threads
+	* backend/voyager/brl.c: Corrected Voyager driver to make it work
+	on Mac
+	* backend/alva: Rewrote the Alva serial driver with new serial
+	API, autodetection and timeout handling thanks to documentation
+	provided by Alva
+	* backend/eurobraille: Added detection of the CLIO-eurobraille
+	display in eurobraille driver
+	* lib/config_*.c: Updated list of tables
+	* test/test_libbraille.c: Add output of debug messages to the
+	Braille display when pressing keys
+	* lib/config.c: Autodetect usb displays first then serial displays
+	* lib/braille.c: Lower usb debug log
+	* Makefile.am: Cleaning
+	* lib/serial_tios.c: Mac portability - use usleep instead of
+	select. Do not set serial output speed at 0 on init
+	* configure.ac, lib/Makefile.am: Improved libusb detection
+	* autogen_mac.sh: Adding Mac specific autogen script 
+
+2004-11-26  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.18.0
+	* Added win32 Python module to NSIS windows installer
+	* Compiling win32 Python module with visual studio
+
+2004-11-24  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Rewrote the handytech driver with new serial API, autodetection
+	and timeout handling
+
+2004-11-23  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Unified log message at detection
+
+2004-11-22  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added HTML documentation to RPM devel package
+	* Added HTML documentation to debian devel package
+	* Added --enable-doc option to configure to generate HTML
+	documentation
+
+2004-11-19  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Created libbraille-fake debian package for virtual display
+
+2004-11-18  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Corrected compilation with Mingw32 compiler
+
+2004-11-15  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added documentation to windows installer
+	* Corrected timeout in 'none' driver
+	* Check for libusb >= 0.1.8
+	* Split config.c in config_posix.c and config_win32.c
+
+2004-11-13  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Passing a brli_term* argument to brli_drvinfo
+	* Created a RPM package of libbraille
+
+2004-11-09  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* braille_info(BRL_PATH) returns installation prefix in unix and installation
+	location in windows. BRL_PATHCONF does not exist in windows and
+	corresponds to the directory where is the configuration file in unix.
+
+2004-11-08  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.17.0
+
+2004-11-05  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Split BRL_PATH option in BRL_PATHCONF where to look for
+	configuration file in unix, BRL_PATHDRV where to look for drivers
+	and BRL_PATHTBL where to look for tables
+	* Split serial.c in serial_tios.c for termios and serial_win32.c
+	for win32
+
+2004-11-04  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Updated Fake GTK virtual display to handle timeouts like other
+	drivers
+	* Corrected thread problem which prevented correct refreshing in
+	the Fake Gtk+ virtual display driver
+
+2004-11-03  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added driver for Technibraille displays
+	* Corrected timeout problem in serial communication
+	* Added braille_debug function to choose the level of verbosity
+	* Corrected compilation warnings
+
+2004-10-05  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.16.0
+	* Changed test script to pause before exiting in win32 and to quit
+	after a few seconds
+
+2004-10-04  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added driver for Tieman Voyager USB display thanks to doc from
+	Tieman
+	* Added usb driver to windows installer
+	* Changed win32 directories structure for installation system
+
+2004-09-09  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added a windows installer using NSIS http://nsis.sf.net
+	* Rewrote configuration system using the registry in win32
+
+2004-08-30  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.15.0
+
+2004-08-26  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Correcting small time problem in blocking mode under win32
+	* Filtering invalid ascii chars in braille_write and
+	braille_statuswrite
+	* Removed useless BRAILLECALL calling convention modifier
+	* Added a function to get the type of a driver (special, serial or
+	usb)
+	* Updated debian package including support for hotplug
+	* Separated library version from package version for better library versioning
+
+2004-08-19  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added 'auto' in the list of available drivers
+	* Changed braille_read so that it never returns a BRL_NONE in
+	blocking mode
+	* Improved documentation
+
+2004-08-04  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Moved none driver from backend/None to backend/none
+	* Rewrote the 'eco' driver as 'once' with doc from ONCE,
+	autodetection and timeout handling
+
+2004-08-03  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Corrected autodetection small bug (really)
+
+2004-07-29  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.14.1
+	* Changed test program to test "none" if no terminal is detected
+	with "auto"
+	* Corrected timeout handling in fake drivers to use millisecondes
+	* Corrected autodetection small bug
+
+2004-07-28  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Split key codes in a separate header file
+	* Corrected incorrect include path when building python module
+
+2004-07-26  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.14.0
+	* Corrected some prototypes in braille.h to specify const strings
+
+2004-06-24  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added functions to get available tables
+	* Moved some configuration functions from braille.c to config.c
+	
+2004-06-23  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added Alva USB display support
+	* Changed braille_timeout to take an arg in milliseconds (for USB)
+	* Added USB support
+	* Added functions to get available drivers and supported models
+	* Added functions to handle status cells
+	* Changed Fake makefiles so that its source is included in the
+	distribution tar.gz
+
+2004-05-19  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.13.0
+
+2004-05-13  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Rewrote driver for eurobraille with provided documentation;
+	using new serial API, autodetection, timeouts and support for Iris
+	* Updated fake backend for new API
+	
+2004-05-06  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Handling timeouts in none, text and fakewin backends
+	* Correcting braille_timeout prototype and checking timeout value
+	* Using test_libbraille.c file for both unix and Visual Studio
+	test source
+	* Removed term->height since all terminals seem to be 1 line
+	anyway
+	* Changed braille_info to report various configuration infos
+
+2004-05-05  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Specified when char need to be signed for portability issues
+
+2004-04-23  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Updated braillenote driver to use brli_timeout
+	* Added brli_timeout to serial API to change only timeouts
+	* Completed new serial API for win32
+	* Corrected small bug in directory handling
+
+2004-04-19  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Corrected bug in braille_config when copying values (thanks to
+	Eric Lapeyre for reporting the bug)
+	* Added terminal autodetection when setting driver to 'auto'
+	* Added braille_info function
+
+2004-04-15  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Changed many functions (especially braille_read and
+	braille_write) so that they can return an error
+
+2004-04-14  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added braille_timeout function to specify how much time to wait
+	when reading data
+	* Translated TODO file in english
+
+2004-04-13  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.12.0
+
+2004-04-08  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added data into TODO file
+	* Added visual studio project for each driver
+
+2004-04-06  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added braille_config function to configure some parameters
+	without using a configuration file
+	* Changed configuration behavior
+	* Moved configuration related fuctions to config.c
+
+2004-04-05  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Renamed all error related functions from braillei_* to brli_*
+
+2004-04-01  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Added braille table for french in windows
+	* Added possibility to put comments in tables
+	* Changing options name in libbraille.conf
+
+2004-03-31  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Renamed drivers from libbraillefo to foo
+	* Moving visual studio projects from VisualC6 to the backend and
+	lib directory
+	* Corrected lib version number for Visual Studio
+
+2004-03-24  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Release 0.11.0
+	* Corrected visual studio compilation
+
+2004-03-23  Sébastien Sablé  <sable@users.sourceforge.net>
+
+	* Corrected debian package creation
+	* Renamed BrailleLite driver from bl to braillelite
+	* Modified code so that it compiles with mingw32
+	* Modified BrailleLite to allow timeouts and device detection
+
+2004-03-19  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Restore serial port paramters on exit
+	* Renamed BrailleNote driver from libbraillebn to braillenote
+	* Modified BrailleNote driver:
+	. uses the new serial API
+	. timeouts can be configured
+	. the terminal can be autodetected
+	. corrected detection and refreshing problems when the terminal is
+	  in supsend mode
+	* Improved new serial API for POSIX
+	
+2004-03-10  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Added a warning if an error string is set while the old error
+	message as not been read
+	* Corrected ability to unload a driver and load another one
+
+2004-03-09  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Corrected problem when path of installation directory is too
+	long
+
+2004-03-03  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Added BrailleLite driver using new serial API
+	* Added new serial API which can handle timeouts
+
+2004-02-19  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Corrected error reporting code so that the error string can be
+	concatenated
+
+2004-02-04  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Updated each driver for the new driver API
+	* New driver API
+	* Improved the fake Gtk+ backend thanks to Cedric Checoury
+
+2004-01-26  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Modified identbrl in drivers to return a const char
+	* Removing from CVS backends for terminals that are not supported
+	yet
+	* Adding VisualC6 directory to dist files
+
+2004-01-23  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.10.0
+	* Added release info to libbraille .so file
+	* Added VisualC6 desktop and projects to compile libbraille with
+	ms visual C++
+
+2004-01-21  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Moved functions related to serial communication in serial.c
+	* Common functions are now compiled inside libbraille and not the
+	drivers. They are imported by the drivers from libbraille.
+	* Renamed internal.c and internal.h to error.c and brl_error.h
+
+2004-01-16  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Various cleaning and decoration to compile with visual c++
+	* Simplified and cleaned the Text backend
+	* Changed ECO autodetection to abandon after some time
+
+2004-01-05  Sébastien Sablé  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Corrected Eco detection
+	* Simplified the braille.h header to remove useless pragmas specific to
+	some compilers
+
+2003-10-21  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* BrailleNote: the BrailleNote sometimes returns a wrong display
+	size; in this case the driver will reask the value
+
+2003-06-03  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.12
+	* Changed TimeOut for read on the serial port in windows
+	* Changed build environment in cross-configure.sh
+
+2003-01-31  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.11
+	* Modified cross-configure.sh for autobuild
+	* Added myconfigure.sh
+	* Changed "config.h" to <config.h>
+
+2002-12-16  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.10
+	* Corrected minor mistakes
+	* Modified Makefiles to compile with mingw32 3.2
+	* Corrected some error reporting mistakes
+
+2002-12-12  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.8
+	* Corrected libltdl headers path
+	* Updated doc
+	* Added a braillei_ prefix to internal functions
+	* Changed braille_close prototype to report errors
+	* Changed error reporting : use braille_geterror
+	* Updated Makefiles and configure.ac
+	* Created debian package for python
+	* Corrected dll problem with Visual C++
+	* Corrected java wrapper problem loading under win32
+
+2002-08-27  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.6
+	* Improved configure detection
+	* Added Gtk+ fake Braille terminal
+	* Added java extension
+	* Added python module
+
+2002-07-12  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.5
+
+2002-03-11  Sebastien Sable  <Sebastien.Sable@snv.jussieu.fr>
+
+	* Release 0.9.0
+	* First public release

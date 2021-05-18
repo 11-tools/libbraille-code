@@ -1,0 +1,31 @@
+README for the USB hotplug scripts for libbralle :
+--------------------------------------------------
+
+If you intend to use a USB Braille display with libusb and Linux, you
+should install the hotplug package, and then take the following steps
+:
+  o Copy the libbraille.usermap and libusbbraille files from this
+    directory to /etc/hotplug/usb/
+
+  o Check if /etc/hotplug/usb/libbraille.usermap already knows about
+    your Braille display. If your Braille display is not in this
+    list,add a line similar to the other ones using the vendor ID and
+    the product ID of your Braille display. Please contact the
+    libbraille-misc mailing list in this case so the ids of your
+    Braille display can be added.
+
+  o Make sure that the "braille" group exists on your system and that
+    every user who should be allowed to acces the Braille display is a
+    member of that group.
+    Alternatively, you can enable access for every user of your system in
+    libusbbraille.
+
+The vendor ID and product ID of your Braille display can be obtained
+by running lsusb (you might need to run it as root).
+
+If the hotplug support doesn't work for you once you have taken the steps
+described above, check that your kernel has been built with hotplug support.
+Otherwise, you'll need to rebuild your kernel.
+
+ -- Sébastien Sablé <sable@users.sourceforge.net>
+    (based on text by Julien BLACHE for libsane)

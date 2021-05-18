@@ -1,0 +1,4 @@
+usr/include/*.h
+usr/lib/*.a
+usr/lib/libbraille*.la
+usr/lib/libbraille*/*.a

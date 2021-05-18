@@ -1,0 +1,6 @@
+Backend for Alva displays using USB connexion
+=============================================
+
+This driver was written thanks to a 544 Satellite terminal provided by
+EuroBraille. It also was written thanks to documentation provided by
+Alva.

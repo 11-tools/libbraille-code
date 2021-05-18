@@ -1,0 +1,196 @@
+; libbraille installer script, 
+; requires NSIS installer (http://www.nullsoft.com)
+
+!include "MUI.nsh"
+
+!define PRODUCT "libbraille"
+!define VERSION "@PACKAGE_VERSION@"
+!define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}-${VERSION}"
+!define CONFIG_PATH "Software\${Product}\${VERSION}"
+
+
+Name "libbraille"
+Caption "libbraille Version ${VERSION} Setup"
+
+
+OutFile "libbraille-bin-${VERSION}.exe"
+InstallDir $PROGRAMFILES\Libbraille-${VERSION}
+SetCompressor lzma
+
+!define MUI_ABORTWARNING
+!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of ${PRODUCT}.\n\r\n\rlibbraille is a computer shared library which makes it possible to easily access Braille displays and terminals. It provides a simple API to write text on the Braille display, directly draw Braille dots, or get the value of pressed keys. It is compatible with a wide range of Braille displays and can autodetect some of them."
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "..\COPYING"
+!insertmacro MUI_PAGE_COMPONENTS
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+!define MUI_FINISHPAGE_NOAUTOCLOSE
+!define MUI_FINISHPAGE_LINK "Visit the Libbraille website"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://libbraille.org"
+; !define MUI_FINISHPAGE_RUN_TEXT "Run test program"
+; !define MUI_FINISHPAGE_RUN "$INSTDIR\bin\SimpleTest.exe"
+!insertmacro MUI_PAGE_FINISH
+;!insertmacro MUI_UNPAGE_WELCOME
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_LANGUAGE "English"
+
+ShowInstDetails show
+ShowUnInstDetails show
+
+
+Section "Library (required)" sec_library
+SectionIn RO
+	SetShellVarContext all
+	
+	ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
+   	StrCmp $R0 "" install_start 0
+
+	ClearErrors
+	UserInfo::GetName
+	Pop $0
+	UserInfo::GetAccountType
+	Pop $1
+	StrCmp $1 "Admin" install_start 0
+	MessageBox MB_OK "Administrator access rights are required to install ${PRODUCT}!"
+	Quit
+
+    install_start:
+	ReadRegStr $R0 HKLM "${UNINSTALL_PATH}" "DisplayName"
+	ReadRegStr $R1 HKLM "${UNINSTALL_PATH}" "Version"
+	StrCmp $R0 "" +3 0
+   	MessageBox MB_OK "${PRODUCT} Version $R1 is installed on this system. $\nPlease uninstall first!"
+	Quit
+
+	SetOutPath $INSTDIR
+  	File "..\ChangeLog"
+  	File "..\AUTHORS"
+  	File "..\COPYING"
+  	File "..\COPYING"
+  	SetOutPath $INSTDIR\drivers
+	File "..\test\Release\drivers\*.dll"
+  	SetOutPath $INSTDIR\tables
+	File "..\tables\*.tbl"
+  	SetOutPath $INSTDIR\bin
+  	File "..\test\Release\SimpleTest.exe"
+  	SetOutPath $INSTDIR\inf
+ 	File "libbraille.inf"
+	File "inf\*"
+  	SetOutPath $SYSDIR
+  	File "..\lib\Release\braille.dll"
+  	File "inf\libusb0.dll"
+
+;   	DeleteRegKey HKLM "Software\Libbraille"
+
+	CreateDirectory $SMPROGRAMS\${PRODUCT}
+
+  	CreateShortCut "$SMPROGRAMS\${PRODUCT}\Test Program.lnk" "$INSTDIR\bin\SimpleTest.exe"
+  	CreateShortCut "$SMPROGRAMS\${PRODUCT}\LGPL License.lnk" "$INSTDIR\COPYING"
+
+  	WriteUninstaller $INSTDIR\uninstall.exe
+ 	WriteRegExpandStr HKLM "${UNINSTALL_PATH}" "UninstallString" "$INSTDIR\uninstall.exe"
+ 	WriteRegExpandStr HKLM "${UNINSTALL_PATH}" "InstallLocation" "$INSTDIR"
+  	WriteRegStr HKLM "${UNINSTALL_PATH}" "DisplayName" "${PRODUCT}-${VERSION}"
+  	WriteRegStr HKLM "${UNINSTALL_PATH}" "Version" "${VERSION}"
+  	WriteRegDWORD HKLM "${UNINSTALL_PATH}" "NoModify" "1"
+  	WriteRegDWORD HKLM "${UNINSTALL_PATH}" "NoRepair" "1"
+
+ 	WriteRegStr HKLM "${CONFIG_PATH}" "InstallLocation" "$INSTDIR"
+ 	WriteRegStr HKLM "${CONFIG_PATH}" "Driver" "auto"
+ 	WriteRegStr HKLM "${CONFIG_PATH}" "Table" "win_latin1-fr.tbl"
+ 	WriteRegStr HKLM "${CONFIG_PATH}" "Device" "COM1"
+
+SectionEnd
+
+
+Section "SDK (optional)" sec_sdk
+
+   	SetOutPath $INSTDIR\SDK\VisualC6\include
+   	File "..\include\braille.h"
+   	File "..\include\brl_keycode.h"
+   	SetOutPath $INSTDIR\SDK\VisualC6\lib
+	File "..\lib\Release\braille.lib"
+
+SectionEnd
+
+Section "Documentation (optional)" sec_doc
+
+   	SetOutPath $INSTDIR\doc
+   	File "..\doc\tutorial\*"
+  	CreateShortCut "$SMPROGRAMS\${PRODUCT}\API Documenation.lnk" "$INSTDIR\doc\tutorial.html"
+
+SectionEnd
+
+Section /o "Python module (optional)" sec_python
+
+	; see if there is any python interpreter
+	ClearErrors
+	ExecShell "open" "python.exe" `-c "print 'Python is alive!'"` SW_SHOWMINIMIZED
+	IfErrors 0 NoAbort
+	  MessageBox MB_OK|MB_ICONEXCLAMATION "Unable to find Python interpreter. Please install Python first."
+	  Abort
+	NoAbort:
+        GetTempFileName $9
+	GetTempFileName $8
+        FileOpen $7 $9 w
+	FileWrite $7 'import os, sys$\n'
+	FileWrite $7 "f=open(r'$8', 'w')$\n"
+	FileWrite $7 'f.write(os.path.join(sys.prefix, "lib", "site-packages"))$\n'
+	FileWrite $7 'f.close()$\n'
+	FileClose $7
+	ExecShell "open" "python.exe" `"$9"` SW_SHOWMINIMIZED
+	IntOp $0 0 + 0
+	Loop:
+          FileOpen $7 $8 r
+          FileRead $7 $6
+          FileClose $7
+	  StrCmp $6 "" 0 EndLoop
+	  Sleep 100
+	  IntOp $0 $0 + 1
+	  IntCmp $0 50 EndLoop
+	  Goto Loop
+	EndLoop:
+	Delete $8
+	Delete $9
+	StrCmp $6 "" 0 NoAbort2
+	MessageBox MB_OK|MB_ICONEXCLAMATION "Could not detect Python installation path"
+	Abort
+	NoAbort2:
+
+  	WriteRegStr HKLM "${UNINSTALL_PATH}" "PythonDir" "$6"
+    	SetOutPath $6
+    	File "..\python\Release\_braille.dll"
+    	File "..\python\braille.py"
+SectionEnd
+
+;; Section "Source Code (optional)" sec_source
+;; 
+;; ;;   	SetOutPath $INSTDIR\src
+;; ;;   	File /r "libbraille-src-${VERSION}\*"
+;; 
+;; SectionEnd
+
+Section "Uninstall"
+
+	SetShellVarContext all
+
+	RMDir /r $SMPROGRAMS\${PRODUCT}
+
+	ReadRegStr $R0 HKLM "${UNINSTALL_PATH}" "PythonDir"
+   	StrCmp $R0 "" skip_python 0
+	Delete $R0\_braille.dll
+	Delete $R0\braille.py
+    skip_python:
+  	DeleteRegKey HKLM "${UNINSTALL_PATH}"
+
+  	RMDir /r $INSTDIR
+
+SectionEnd
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+!insertmacro MUI_DESCRIPTION_TEXT ${sec_library} "Libbraille Runtime"
+!insertmacro MUI_DESCRIPTION_TEXT ${sec_sdk} "The Software Development Kit$\nThis is needed for developers who want to compile an application using Libbraille"
+!insertmacro MUI_DESCRIPTION_TEXT ${sec_doc} "API Documentation"
+!insertmacro MUI_DESCRIPTION_TEXT ${sec_python} "Module to use Libbraille in the Python language$\nYou need to have Python installed in order to install this module."
+;; !insertmacro MUI_DESCRIPTION_TEXT ${sec_source} "The full source code of all components"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END

@@ -1,0 +1,120 @@
+%define name 	libbraille
+%define version @VERSION@
+%define release 1
+%define beta	%nil
+
+%define libmajor 0
+%define libname %mklibname braille %{libmajor}
+%define	libname_devel %mklibname braille %{libmajor} -d
+
+%define __libtoolize /bin/true
+
+Summary:	library to access Braille displays.
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+License:	LGPL
+Group:		Development/Libraries
+URL:		http://libbraille.org/
+Packager:	Sébastien Sablé <sable@users.sourceforge.net>
+Source:		http://dl.sourceforge.net/libbraille/libbraille-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires:	gcc-c++ libusb-devel >= 0.1.8 latex2html
+Requires:	libusb >= 0.1.8
+
+%description
+Libbraille is a computer shared library which makes it possible to
+easily develop for Braille displays and terminals. It provides a
+simple API to write text on the Braille display, directly draw Braille
+dots, or get the value of pressed keys. It is compatible with a wide
+range of Braille displays and can autodetect some of them.
+
+For the latest information on libbraille and mailing list access, see
+http://libbraille.org/
+
+%package -n %{libname}
+Group: 		System/Kernel and hardware
+Summary: 	library to access Braille displays. This package contains libbraille library.
+Provides:	%{libname} = %{version}-%{release}
+
+%description -n %{libname}
+Libbraille is a computer shared library which makes it possible to
+easily develop for Braille displays and terminals. It provides a
+simple API to write text on the Braille display, directly draw Braille
+dots, or get the value of pressed keys. It is compatible with a wide
+range of Braille displays and can autodetect some of them.
+
+For the latest information on libbraille and mailing list access, see
+http://libbraille.org/
+
+
+%package -n %{libname_devel}
+Summary:	Header files, libraries and development documentation for %{name}.
+Group:		Development/C
+Requires:	%{libname} = %{version}-%{release}
+Provides:	%{libname_devel} = %{version}-%{release}
+
+%description -n %{libname_devel}
+Libbraille is a computer shared library which makes it possible to
+easily develop for Braille displays and terminals. It provides a
+simple API to write text on the Braille display, directly draw Braille
+dots, or get the value of pressed keys. It is compatible with a wide
+range of Braille displays and can autodetect some of them.
+
+This package contains the headers and development libraries necessary 
+to develop applications using %{name}.
+
+For the latest information on libbraille and mailing list access, see
+http://libbraille.org/
+
+%prep
+%setup
+
+%build
+%configure --enable-doc
+%{__make} %{?_smp_mflags}
+
+%install
+%{__rm} -rf %{buildroot}
+%makeinstall
+
+# # usb.usermap and hotplug script for libusb user support
+# mkdir -p $RPM_BUILD_ROOT%{_libdir}/hotplug/libbraille
+# #install -m644 %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/hotplug/sane/usb.usermap
+# install -m644 tools/hotplug/libsane.usermap $RPM_BUILD_ROOT%{_libdir}/hotplug/sane/usb.usermap
+# mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb
+# install -m755 %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/hotplug/usb/libusbscanner
+
+%post
+/sbin/ldconfig 2>/dev/null
+
+%postun
+/sbin/ldconfig 2>/dev/null
+
+%clean
+%{__rm} -rf %{buildroot}
+
+%files -n %{libname}
+%defattr(-, root, root, 0755)
+%doc NEWS TODO COPYING AUTHORS ChangeLog README
+%config(noreplace) %{_sysconfdir}/libbraille.conf
+%{_bindir}/*
+%{_libdir}/*.so
+%{_libdir}/libbraille/*.so
+%{_libdir}/*.so.*
+%{_libdir}/libbraille/*.so.*
+%{_libdir}/libbraille/*.la
+%{_datadir}/libbraille
+
+%files -n %{libname_devel}
+%defattr(-, root, root, 0755)
+%doc doc/tutorial.html doc/tutorial.css
+%{_includedir}/*.h
+%{_libdir}/*.a
+%{_libdir}/libbraille/*.a
+%exclude %{_libdir}/*.la
+%exclude %{_libdir}/libbraille/*.la
+
+%changelog
+* Sat Nov 13 2004 Sébastien Sablé <sable@users.sourceforge.net> 0.17.0-1
+- initial package
